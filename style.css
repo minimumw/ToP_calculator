@@ -1,0 +1,45 @@
+body {
+  background-color: aquamarine;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+
+.calc-container {
+  width: 25%;
+  height: 600px;
+  border: 3px solid black;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 1rem;
+  background-color: lavender;
+  padding: 1rem;
+}
+
+.display-container {
+  border: 1px solid red;
+  display: flex;
+  height: 80px;
+  grid-column: 1 / 5;
+  background-color: rgb(185, 181, 181);
+  font-size: 4em;
+  justify-content: end;
+  align-items: flex-end;
+  padding: 0.25rem;
+  font-family: "Orbitron", sans-serif;
+}
+
+button {
+  border-radius: 0.4rem;
+  font-size: 2em;
+  font-family: "Courier New";
+}
+
+button.num-btn {
+  background-color: rgba(105, 224, 240, 0.904);
+}
+
+button.operation-btn {
+  background-color: rgb(235, 181, 100);
+}
