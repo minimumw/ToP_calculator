@@ -3,6 +3,8 @@
 // Query selectors
 
 const display = document.querySelector('.display-container');
+const displayInput = document.getElementById('input');
+const history = document.getElementById('history-display');
 const numberBtns = document.querySelectorAll('.num-btn');
 const operatorBtns = document.querySelectorAll('.operation-btn');
 const clearBtn = document.querySelector('.clear-btn');
@@ -22,25 +24,41 @@ const operations = {
 // Write to display
 numberBtns.forEach(btn => {
   btn.addEventListener('click', function (e) {
-    display.innerHTML += e.originalTarget.innerHTML;
+    input.innerHTML += e.originalTarget.innerHTML;
   });
 });
 
 // Perform operation
 let operation = '';
-let displayValue = 0;
+let num1 = 0;
 let num2 = 0;
 let curResult = 0;
 
 const operate = function (e) {
-  curResult = operations[e.originalTarget.innerHTML](displayValue, num2);
+  num2 = +displayInput.innerHTML;
+  if (!num2) return;
+  history.innerHTML = '';
+  curResult = operations[operation](+num1, +num2);
+  input.innerHTML = curResult;
 };
 
 operatorBtns.forEach(btn => {
   btn.addEventListener('click', function (e) {
-    // get current typed value, convert to number
-    displayValue = +display.innerHTML;
-    operation = e.originalTarget.innerHTML;
-    console.log(displayValue, operation);
+    if (!history.innerHTML) {
+      num1 = +input.innerHTML;
+      operation = e.originalTarget.innerHTML;
+      history.innerHTML += ` ${num1} ${operation}`;
+      displayInput.innerHTML = '';
+    } else {
+      num2 = +displayInput.innerHTML;
+      console.log(num2, num1);
+      curResult = operations[operation](num1, num2);
+      operation = e.originalTarget.innerHTML;
+      displayInput.innerHTML = '';
+      history.innerHTML = ` ${curResult} ${operation}`;
+      num1 = curResult;
+    }
   });
 });
+
+equalBtn.addEventListener('click', operate);
