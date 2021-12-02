@@ -19,20 +19,18 @@ const operations = {
   '÷': (x, y) => x / y,
 };
 
-// Event Listeners
-
-// Write to display
-numberBtns.forEach(btn => {
-  btn.addEventListener('click', function (e) {
-    input.innerHTML += e.originalTarget.innerHTML;
-  });
-});
-
-// Perform operation
+// Variables
 let operation = '';
 let num1 = 0;
 let num2 = 0;
 let curResult = 0;
+
+// Functions
+
+const writeDisplay = function (e) {
+  input.innerHTML += e.originalTarget.innerHTML;
+  if (input.innerHTML.includes('.')) return;
+};
 
 const operate = function (e) {
   num2 = +displayInput.innerHTML;
@@ -42,23 +40,47 @@ const operate = function (e) {
   input.innerHTML = curResult;
 };
 
+const performOperation = function (e) {
+  if (!history.innerHTML) {
+    num1 = +input.innerHTML;
+    operation = e.originalTarget.innerHTML;
+    history.innerHTML += ` ${num1} ${operation}`;
+    displayInput.innerHTML = '';
+  } else {
+    num2 = +displayInput.innerHTML;
+    curResult = operations[operation](num1, num2);
+    operation = e.originalTarget.innerHTML;
+    displayInput.innerHTML = '';
+    history.innerHTML = ` ${curResult} ${operation}`;
+    num1 = curResult;
+  }
+};
+
+const clearAll = function (e) {
+  operation = '';
+  num1 = 0;
+  num2 = 0;
+  curResult = 0;
+  input.innerHTML = '';
+  displayInput.innerHTML = '';
+  history.innerHTML = '';
+};
+
+const deleteLastChar = function (e) {
+  displayInput.innerHTML = displayInput.innerHTML.slice(0, -1);
+};
+
 operatorBtns.forEach(btn => {
-  btn.addEventListener('click', function (e) {
-    if (!history.innerHTML) {
-      num1 = +input.innerHTML;
-      operation = e.originalTarget.innerHTML;
-      history.innerHTML += ` ${num1} ${operation}`;
-      displayInput.innerHTML = '';
-    } else {
-      num2 = +displayInput.innerHTML;
-      console.log(num2, num1);
-      curResult = operations[operation](num1, num2);
-      operation = e.originalTarget.innerHTML;
-      displayInput.innerHTML = '';
-      history.innerHTML = ` ${curResult} ${operation}`;
-      num1 = curResult;
-    }
-  });
+  btn.addEventListener('click', performOperation);
+});
+
+// Event Listeners
+numberBtns.forEach(btn => {
+  btn.addEventListener('click', writeDisplay);
 });
 
 equalBtn.addEventListener('click', operate);
+
+clearBtn.addEventListener('click', clearAll);
+
+deleteBtn.addEventListener('click', deleteLastChar);
