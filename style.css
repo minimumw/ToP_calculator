@@ -76,3 +76,10 @@ button.operation-btn {
   background-color: rgb(241, 122, 122);
   grid-column: 3/5;
 }
+
+@media (max-width: 900px) {
+  .calc-container {
+    height: 100%;
+    width: 100%;
+  }
+}

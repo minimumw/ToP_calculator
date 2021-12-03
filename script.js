@@ -28,16 +28,28 @@ let curResult = 0;
 // Functions
 
 const writeDisplay = function (e) {
+  if (input.innerHTML.includes('.') && e.originalTarget.innerHTML === '.')
+    return;
   input.innerHTML += e.originalTarget.innerHTML;
-  if (input.innerHTML.includes('.')) return;
 };
 
 const operate = function (e) {
-  num2 = +displayInput.innerHTML;
-  if (!num2) return;
+  if (displayInput.innerHTML === '0' && operation === '÷') {
+    alert(
+      'You cannont divide by zero. You could trigger the heat death of the universe'
+    );
+    displayInput.innerHTML = '';
+    return;
+  }
+
+  num2 = displayInput.innerHTML;
+
   history.innerHTML = '';
   curResult = operations[operation](+num1, +num2);
-  input.innerHTML = curResult;
+  input.innerHTML =
+    curResult % 1 != 0
+      ? Math.round(10000000 * curResult) / 10000000
+      : curResult;
 };
 
 const performOperation = function (e) {
